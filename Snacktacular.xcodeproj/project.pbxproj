@@ -17,9 +17,11 @@
 		3E8390E5206597F600512DEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E8390E3206597F600512DEA /* Main.storyboard */; };
 		3E8390E7206597F600512DEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E8390E6206597F600512DEA /* Assets.xcassets */; };
 		3E8390EA206597F600512DEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E8390E8206597F600512DEA /* LaunchScreen.storyboard */; };
+		4F0FDE28244BDD0000C403AA /* UIViewController+alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0FDE27244BDD0000C403AA /* UIViewController+alert.swift */; };
 		4F5A291D2444B6B1006B64C2 /* Spot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A291C2444B6B1006B64C2 /* Spot.swift */; };
 		4F5A291F2444B83D006B64C2 /* Spots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A291E2444B83D006B64C2 /* Spots.swift */; };
 		4F5A29212444CDC5006B64C2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4F5A29202444CDC5006B64C2 /* GoogleService-Info.plist */; };
+		4FA0757B244C1AF900041D70 /* Double+roundTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0757A244C1AF900041D70 /* Double+roundTo.swift */; };
 		5DD9BEB4EE3B4709B7400FAC /* Pods_Snacktacular.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDCA3CD430C83CCAA7A0403A /* Pods_Snacktacular.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,9 +40,11 @@
 		3E8390E6206597F600512DEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E8390E9206597F600512DEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E8390EB206597F600512DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F0FDE27244BDD0000C403AA /* UIViewController+alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+alert.swift"; path = "../../WeatherGift/WeatherGift/UIViewController+alert.swift"; sourceTree = "<group>"; };
 		4F5A291C2444B6B1006B64C2 /* Spot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spot.swift; sourceTree = "<group>"; };
 		4F5A291E2444B83D006B64C2 /* Spots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spots.swift; sourceTree = "<group>"; };
 		4F5A29202444CDC5006B64C2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4FA0757A244C1AF900041D70 /* Double+roundTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+roundTo.swift"; sourceTree = "<group>"; };
 		EDCA3CD430C83CCAA7A0403A /* Pods_Snacktacular.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snacktacular.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -85,6 +89,8 @@
 				3E0F960B2065A17500AE450D /* SpotDetailViewController.swift */,
 				3E0F960D2065AB6400AE450D /* SpotReviewsTableViewCell.swift */,
 				3E0F960F2065AC1A00AE450D /* SpotPhotosCollectionViewCell.swift */,
+				4FA0757A244C1AF900041D70 /* Double+roundTo.swift */,
+				4F0FDE27244BDD0000C403AA /* UIViewController+alert.swift */,
 				3E8390E3206597F600512DEA /* Main.storyboard */,
 				3E8390E6206597F600512DEA /* Assets.xcassets */,
 				3E8390E8206597F600512DEA /* LaunchScreen.storyboard */,
@@ -283,6 +289,8 @@
 				3E8390E2206597F600512DEA /* SpotsListViewController.swift in Sources */,
 				3E0F96102065AC1A00AE450D /* SpotPhotosCollectionViewCell.swift in Sources */,
 				3E0F960C2065A17500AE450D /* SpotDetailViewController.swift in Sources */,
+				4F0FDE28244BDD0000C403AA /* UIViewController+alert.swift in Sources */,
+				4FA0757B244C1AF900041D70 /* Double+roundTo.swift in Sources */,
 				3E0F960E2065AB6400AE450D /* SpotReviewsTableViewCell.swift in Sources */,
 				3E0F960A20659D9000AE450D /* SpotsTableViewCell.swift in Sources */,
 				4F5A291D2444B6B1006B64C2 /* Spot.swift in Sources */,

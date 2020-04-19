@@ -32,8 +32,11 @@ import GoogleSignIn
 class SpotsListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     var spots: Spots!
     var authUI: FUIAuth!
+    var locationManager: CLLocationManager!
+    var currentLocation: CLLocation!
     
     override func viewDidLoad() {
         
@@ -51,7 +54,9 @@ class SpotsListViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        getLocation()
         spots.loadData {
+            self.sortBasedOnSegmentPressed()
             self.tableView.reloadData()
         }
     }
@@ -99,6 +104,25 @@ class SpotsListViewController: UIViewController {
             
         }
     }
+    
+    func sortBasedOnSegmentPressed() {
+        switch sortSegmentedControl.selectedSegmentIndex{
+        case 0:
+            spots.spotArray.sort(by: {$0.name < $1.name})
+        case 1:
+            spots.spotArray.sort(by: {$0.location.distance(from: currentLocation) < $1.location.distance(from: currentLocation)})
+        case 2:
+            print("Sort by rating")
+        default:
+            print("ERROR")
+        }
+        tableView.reloadData()
+    }
+    
+    @IBAction func sortSegmentPressed(_ sender: UISegmentedControl) {
+        sortBasedOnSegmentPressed()
+    }
+    
 }
 
 extension SpotsListViewController: UITableViewDelegate, UITableViewDataSource{
@@ -109,7 +133,11 @@ extension SpotsListViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SpotsTableViewCell
-        cell.nameLabel.text = spots.spotArray[indexPath.row].name
+        if let currentLocation = currentLocation{
+            cell.currentLocation = currentLocation}
+        
+        cell.configureCell(spot: spots.spotArray[indexPath.row])
+        
         return cell
         
     }
@@ -150,5 +178,49 @@ extension SpotsListViewController: FUIAuthDelegate{
         logoImageView.contentMode = .scaleAspectFit
         loginViewController.view.addSubview(logoImageView)
         return loginViewController
+    }
+}
+
+extension SpotsListViewController: CLLocationManagerDelegate{
+
+    func getLocation(){
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        
+    }
+
+    func handleAuthorizationStatus (status: CLAuthorizationStatus){
+           
+           switch status{
+               
+           case .notDetermined:
+               locationManager.requestWhenInUseAuthorization()
+           case .restricted:
+               self.oneButtonAlert(title: "Location Services Denied", message: "")
+           case .denied:
+               break
+           case .authorizedAlways, .authorizedWhenInUse:
+               locationManager.requestLocation()
+           @unknown default:
+               print("Unkown case of status")
+           }
+            
+       }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+         print("Checking auth status" )
+        handleAuthorizationStatus(status: status)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        
+        currentLocation = locations.last ?? CLLocation()
+        print("Current ocation in \(currentLocation.coordinate.latitude), \(currentLocation.coordinate.longitude)")
+        sortBasedOnSegmentPressed()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        //deal with erre
     }
 }

@@ -9,6 +9,7 @@
 import UIKit
 import GooglePlaces
 import MapKit
+import Contacts
 
 class SpotDetailViewController: UIViewController {
     
@@ -20,24 +21,40 @@ class SpotDetailViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     var spot: Spot!
+    let regionDistance: CLLocationDistance = 750
+    var locationManager: CLLocationManager!
+    var currentLocation: CLLocation!
     
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //mapView.delegate = self
+        
         
         
         if spot == nil{
             spot = Spot()
+            getLocation()
         }
-        nameField.text = spot.name
-        addressField.text = spot.address
+        
+        
+        let region = MKCoordinateRegion(center: spot.coordinate, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        mapView.setRegion(region, animated: true)
+        updateUserInterface()
     }
     
     func updateUserInterface(){
         nameField.text = spot.name
         addressField.text = spot.address
+        updateMap()
+    }
+    
+    func updateMap(){
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.addAnnotation(spot)
+        mapView.setCenter(spot.coordinate, animated: true)
     }
     
     func leaveViewController(){
@@ -56,6 +73,8 @@ class SpotDetailViewController: UIViewController {
     }
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        spot.name = nameField.text!
+        spot.address = addressField.text!
         spot.saveData{ success in
             if success{
                 self.leaveViewController()
@@ -108,4 +127,73 @@ extension SpotDetailViewController: GMSAutocompleteViewControllerDelegate {
     UIApplication.shared.isNetworkActivityIndicatorVisible = false
   }
 
+}
+
+extension SpotDetailViewController: CLLocationManagerDelegate{
+
+    func getLocation(){
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        
+    }
+
+    func handleAuthorizationStatus (status: CLAuthorizationStatus){
+           
+           switch status{
+               
+           case .notDetermined:
+               locationManager.requestWhenInUseAuthorization()
+           case .restricted:
+               self.oneButtonAlert(title: "Location Services Denied", message: "")
+           case .denied:
+               break
+           case .authorizedAlways, .authorizedWhenInUse:
+               locationManager.requestLocation()
+           @unknown default:
+               print("Unkown case of status")
+           }
+            
+       }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+         print("Checking auth status" )
+        handleAuthorizationStatus(status: status)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        guard spot.name == "" else {
+            return
+        }
+        
+        
+        let geoCoder = CLGeocoder()
+        var name = ""
+        var address = ""
+        let currentLocation = locations.last ?? CLLocation()
+        spot.coordinate = currentLocation.coordinate
+        geoCoder.reverseGeocodeLocation(currentLocation) { ( placemarks, error ) in
+            
+            if placemarks != nil{
+                let placemark = placemarks?.last
+                name = placemark?.name ?? "Unknown"
+                if let postalAddress =  placemark?.postalAddress {
+                    address = CNPostalAddressFormatter.string(from: postalAddress, style: .mailingAddress)
+                }
+            }else{
+                print("Error")
+                
+            }
+            print("Location name: \(name)")
+            
+            self.spot.name = name
+            self.spot.address = address
+            
+            self.updateUserInterface()
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        //deal with erre
+    }
 }
