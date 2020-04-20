@@ -55,6 +55,7 @@ class SpotsListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         getLocation()
+        navigationController?.setToolbarHidden(false, animated: true)
         spots.loadData {
             self.sortBasedOnSegmentPressed()
             self.tableView.reloadData()
